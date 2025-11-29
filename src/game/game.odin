@@ -12,8 +12,10 @@ Duplication_Error :: struct {
 
 SQUARE_SIZE :: 3
 
+Field :: [][]int
+
 @(private)
-valid_region :: proc(reg: [][]int, max_rows: int, max_cols: int) -> Error {
+valid_region :: proc(reg: Field, max_rows: int, max_cols: int) -> Error {
 	check := make(map[int][2]int)
 	defer delete(check)
 
@@ -33,7 +35,7 @@ valid_region :: proc(reg: [][]int, max_rows: int, max_cols: int) -> Error {
 	return nil
 }
 
-valid_square :: proc(sq: [][]int) -> Error {
+valid_square :: proc(sq: Field) -> Error {
 	return valid_region(sq, SQUARE_SIZE, SQUARE_SIZE)
 }
 
@@ -41,7 +43,7 @@ valid_row :: proc(l: []int) -> Error {
 	return valid_region({l}, 1, len(l))
 }
 
-valid_col :: proc(l: [][]int) -> Error {
+valid_col :: proc(l: Field) -> Error {
 	return valid_region(l, len(l), 1)
 }
 
@@ -50,40 +52,42 @@ Numbers_Set :: bit_set[1 ..= 9]
 ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 @(private)
-region_set :: proc(reg: [][]int, max_rows: int, max_cols: int) -> (set: Numbers_Set) {
+region_set :: proc(
+	reg: Field,
+	row_i := 0,
+	col_i := 0,
+	max_rows: int,
+	max_cols: int,
+) -> (
+	set: Numbers_Set,
+) {
 	row_final := min(max_rows, len(reg))
-	for row_i in 0 ..< row_final {
-		col_final := min(max_cols, len(reg[row_i]))
-		for col_i in 0 ..< col_final {
-			set = set + {reg[row_i][col_i]}
+	for y in row_i ..< row_final {
+		col_final := min(max_cols, len(reg[y]))
+		for x in col_i ..< col_final {
+			set = set + {reg[y][x]}
 		}
 	}
 
 	return set
 }
 
-square_set :: proc(sq: [][]int) -> Numbers_Set {
-	return region_set(sq, SQUARE_SIZE, SQUARE_SIZE)
+square_set :: proc(field: Field) -> Numbers_Set {
+	return region_set(field, max_rows = SQUARE_SIZE, max_cols = SQUARE_SIZE)
 }
 
-row_set :: proc(l: []int) -> Numbers_Set {
-	return region_set({l}, 1, len(l))
+row_set :: proc(field: Field, i: int) -> Numbers_Set {
+	return region_set(field, row_i = i, max_rows = i + 1, max_cols = card(ALL_NUMBERS))
 }
 
-col_set :: proc(l: [][]int) -> Numbers_Set {
-	return region_set(l, len(l), 1)
+col_set :: proc(field: Field, i: int) -> Numbers_Set {
+	return region_set(field, col_i = i, max_rows = len(field), max_cols = i + 1)
 }
 
-cell_set :: proc(field: [][]int, row_i: int, col_i: int) -> Numbers_Set {
+cell_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
 	s := square_set(field)
-	r := row_set(field[row_i])
-
-	col := make([][]int, 9)
-	defer delete(col)
-	for l, i in field {
-		col[i] = l[col_i:1]
-	}
-	c := col_set(col)
+	r := row_set(field, row_i)
+	c := col_set(field, col_i)
 
 	return ALL_NUMBERS - s - r - c
 }

@@ -100,7 +100,14 @@ square_set :: proc(t: ^testing.T) {
 
 @(test)
 row_set :: proc(t: ^testing.T) {
-	set := game.row_set({1, 2, 0, 3, 0})
+	set := game.row_set(
+		{ 	//
+			{1, 1, 1, 1, 1},
+			{1, 2, 0, 3, 0},
+			{9, 9, 9, 9, 9},
+		},
+		1,
+	)
 
 	testing.expect_value(t, set, game.Numbers_Set{1, 2, 3})
 }
@@ -108,13 +115,14 @@ row_set :: proc(t: ^testing.T) {
 @(test)
 col_set :: proc(t: ^testing.T) {
 	set := game.col_set(
-	{ 	//
-		{1, 2},
-		{2, 2},
-		{0, 0},
-		{7, 2},
-		{0, 0},
-	},
+		{ 	//
+			{9, 1, 2},
+			{9, 2, 2},
+			{9, 0, 0},
+			{9, 7, 2},
+			{9, 0, 0},
+		},
+		1,
 	)
 
 	testing.expect_value(t, set, game.Numbers_Set{1, 2, 7})
