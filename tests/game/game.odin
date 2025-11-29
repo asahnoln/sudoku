@@ -23,7 +23,7 @@ generate_lines :: proc(t: ^testing.T) {
 
 	for col_i in 0 ..< 9 {
 		check: bit_set[0 ..< 9]
-		for row_i in 0 ..< 2 {
+		for row_i in 0 ..< 9 {
 			n := ls[row_i][col_i]
 			testing.expectf(
 				t,
