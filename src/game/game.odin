@@ -47,6 +47,8 @@ valid_col :: proc(l: [][]int) -> Error {
 
 Numbers_Set :: bit_set[1 ..= 9]
 
+ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
 @(private)
 region_set :: proc(reg: [][]int, max_rows: int, max_cols: int) -> (set: Numbers_Set) {
 	row_final := min(max_rows, len(reg))
@@ -70,4 +72,18 @@ row_set :: proc(l: []int) -> Numbers_Set {
 
 col_set :: proc(l: [][]int) -> Numbers_Set {
 	return region_set(l, len(l), 1)
+}
+
+cell_set :: proc(field: [][]int, row_i: int, col_i: int) -> Numbers_Set {
+	s := square_set(field)
+	r := row_set(field[row_i])
+
+	col := make([][]int, 9)
+	defer delete(col)
+	for l, i in field {
+		col[i] = l[col_i:1]
+	}
+	c := col_set(col)
+
+	return ALL_NUMBERS - s - r - c
 }

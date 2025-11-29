@@ -119,3 +119,23 @@ col_set :: proc(t: ^testing.T) {
 
 	testing.expect_value(t, set, game.Numbers_Set{1, 2, 7})
 }
+
+cell_set :: proc(t: ^testing.T) {
+	set := game.cell_set(
+		{ 	//
+			{1, 2, 3, 4, 5, 6, 7, 8, 9},
+			{4, 5, 0, 0, 0, 0, 0, 0, 0},
+			{7, 0, 0, 0, 0, 0, 0, 0, 0},
+			{2, 1, 0, 0, 0, 0, 0, 0, 0},
+			{3, 0, 0, 0, 0, 0, 0, 0, 0},
+			{6, 0, 0, 0, 0, 0, 0, 0, 0},
+			{5, 3, 0, 0, 0, 0, 0, 0, 0},
+			{8, 6, 0, 0, 0, 0, 0, 0, 0},
+			{9, 0, 0, 0, 0, 0, 0, 0, 0},
+		},
+		2,
+		1,
+	)
+
+	testing.expect_value(t, set, game.Numbers_Set{8, 9})
+}
