@@ -7,7 +7,7 @@ import "src:game"
 @(test)
 valid_square :: proc(t: ^testing.T) {
 	err := game.valid_square(
-	[][]int { 	//
+	{ 	//
 		{1, 2, 3, 1},
 		{4, 5, 6, 1},
 		{7, 8, 9, 1},
@@ -21,7 +21,7 @@ valid_square :: proc(t: ^testing.T) {
 @(test)
 invalid_square :: proc(t: ^testing.T) {
 	err := game.valid_square(
-	[][]int { 	//
+	{ 	//
 		{1, 2, 3},
 		{4, 5, 2},
 		{7, 8, 9},
@@ -34,7 +34,7 @@ invalid_square :: proc(t: ^testing.T) {
 @(test)
 valid_not_full_square :: proc(t: ^testing.T) {
 	err := game.valid_square(
-	[][]int { 	//
+	{ 	//
 		{1, 2},
 		{4, 5},
 	},
@@ -45,7 +45,7 @@ valid_not_full_square :: proc(t: ^testing.T) {
 
 @(test)
 valid_row :: proc(t: ^testing.T) {
-	err := game.valid_row([]int{1, 2, 3})
+	err := game.valid_row({1, 2, 3})
 
 	testing.expect_value(t, err, nil)
 }
@@ -53,7 +53,7 @@ valid_row :: proc(t: ^testing.T) {
 @(test)
 valid_col :: proc(t: ^testing.T) {
 	err := game.valid_col(
-	[][]int { 	//
+	{ 	//
 		{1, 2},
 		{2, 2},
 		{7, 2},

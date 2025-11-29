@@ -38,7 +38,7 @@ valid_square :: proc(sq: [][]int) -> Error {
 }
 
 valid_row :: proc(l: []int) -> Error {
-	return valid_region([][]int{l}, 1, len(l))
+	return valid_region({l}, 1, len(l))
 }
 
 valid_col :: proc(l: [][]int) -> Error {
