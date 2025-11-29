@@ -174,8 +174,9 @@ cell_set_2 :: proc(t: ^testing.T) {
 cell_set_3 :: proc(t: ^testing.T) {
 	field := game.Field {
 		{3, 5, 9, 2, 6, 7, 4, 1, 8},
-		{2, 6, 1, 3, 5, 4, 9, 7, 1},
-		{7, 4, 8, 1, 9, 0, 0, 0, 0},
+		{2, 6, 1, 3, 5, 4, 9, 7, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0, 0},
+		// {7, 4, 8, 1, 9, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -190,7 +191,8 @@ cell_set_3 :: proc(t: ^testing.T) {
 		// {6, 7, 5, 1, 4, 1, 2, 8, 3},
 	}
 
-	set := game.cell_set(field, 2, 5)
+	set := game.cell_set(field, 1, 8)
+	// set := game.cell_set(field, 2, 5)
 	testing.expect_value(t, set, game.Numbers_Set{1, 5, 9})
 }
 
