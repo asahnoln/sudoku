@@ -17,11 +17,23 @@ Duplication_Error :: struct {
 	pos2: Pos,
 }
 
+// TODO: This is only to test if force filling works at all
+Options_Exhausted_Error :: enum {
+	None,
+	NoOptionsLeft,
+}
+
 SQUARE_SIZE :: 3
 NUMBERS_COUNT :: 9
 ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
-generate_field :: proc(gen := context.random_generator, allocator := context.allocator) -> Field {
+generate_field :: proc(
+	gen := context.random_generator,
+	allocator := context.allocator,
+) -> (
+	Field,
+	Options_Exhausted_Error,
+) {
 	f := make(Field, NUMBERS_COUNT, allocator)
 	for i in 0 ..< NUMBERS_COUNT {
 		f[i] = make(Row, NUMBERS_COUNT, allocator)
@@ -30,12 +42,16 @@ generate_field :: proc(gen := context.random_generator, allocator := context.all
 	for &r, row_i in f {
 		for &c, col_i in r {
 			set := cell_set(f, row_i, col_i)
-			c, _ = rand.choice_bit_set(set, gen)
-			c += 1
+			x, ok := rand.choice_bit_set(set, gen)
+			if !ok {
+				destroy_field(f, allocator)
+				return nil, Options_Exhausted_Error.NoOptionsLeft
+			}
+			c = x + 1
 		}
 	}
 
-	return f
+	return f, nil
 }
 
 destroy_field :: proc(f: Field, allocator := context.allocator) {

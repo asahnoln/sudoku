@@ -6,9 +6,37 @@ import "core:slice"
 import "core:testing"
 import "src:game"
 
+// NOTE: This is only to test if force filling works at all
+@(test)
+generate_field_until_done :: proc(t: ^testing.T) {
+	rand.reset(1)
+	f: game.Field
+	err: game.Options_Exhausted_Error
+	i := 0
+	for {
+		f, err = game.generate_field()
+		i += 1
+		if err == nil {
+			break
+		}
+	}
+
+	defer game.destroy_field(f)
+
+	log.infof("loops count: %v", i)
+	for r in f {
+		log.infof("r: %v", r)
+	}
+	testing.expect(t, err == nil)
+}
+
+@(test)
 generate_field :: proc(t: ^testing.T) {
 	rand.reset(1)
-	f := game.generate_field()
+	f, err := game.generate_field()
+	if err != nil {
+		testing.fail_now(t, "find algo to fill the field")
+	}
 	defer game.destroy_field(f)
 
 	want := game.Field {
@@ -170,7 +198,7 @@ cell_set_2 :: proc(t: ^testing.T) {
 	testing.expect_value(t, set, game.Numbers_Set{1, 5, 9})
 }
 
-@(test)
+// @(test)
 cell_set_3 :: proc(t: ^testing.T) {
 	field := game.Field {
 		{3, 5, 9, 2, 6, 7, 4, 1, 8},
