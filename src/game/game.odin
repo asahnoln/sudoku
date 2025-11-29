@@ -1,7 +1,10 @@
 package game
 
+import "core:math/rand"
+
 Pos :: [2]int
-Field :: [][]int
+Field :: []Row
+Row :: []int
 Numbers_Set :: bit_set[1 ..= 9]
 
 Error :: union {
@@ -17,6 +20,30 @@ Duplication_Error :: struct {
 SQUARE_SIZE :: 3
 NUMBERS_COUNT :: 9
 ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+generate_field :: proc(gen := context.random_generator, allocator := context.allocator) -> Field {
+	f := make(Field, NUMBERS_COUNT, allocator)
+	for i in 0 ..< NUMBERS_COUNT {
+		f[i] = make(Row, NUMBERS_COUNT, allocator)
+	}
+
+	for &r, row_i in f {
+		for &c, col_i in r {
+			set := cell_set(f, row_i, col_i)
+			c, _ = rand.choice_bit_set(set, gen)
+			c += 1
+		}
+	}
+
+	return f
+}
+
+destroy_field :: proc(f: Field, allocator := context.allocator) {
+	for r in f {
+		delete(r, allocator)
+	}
+	delete(f, allocator)
+}
 
 @(private)
 valid_region :: proc(reg: Field, max_rows: int, max_cols: int) -> Error {
@@ -61,11 +88,11 @@ region_set :: proc(
 ) -> (
 	set: Numbers_Set,
 ) {
-	row_final := min(max_rows, len(reg))
-	for y in row_i ..< row_final {
-		col_final := min(max_cols, len(reg[y]))
-		for x in col_i ..< col_final {
-			set = set + {reg[y][x]}
+	row_final := min(row_i + max_rows, len(reg))
+	for x in row_i ..< row_final {
+		col_final := min(col_i + max_cols, len(reg[x]))
+		for y in col_i ..< col_final {
+			set = set + {reg[x][y]}
 		}
 	}
 
@@ -77,11 +104,11 @@ square_set :: proc(field: Field, p: Pos) -> Numbers_Set {
 }
 
 row_set :: proc(field: Field, i: int) -> Numbers_Set {
-	return region_set(field, row_i = i, max_rows = i + 1)
+	return region_set(field, row_i = i, max_rows = 1)
 }
 
 col_set :: proc(field: Field, i: int) -> Numbers_Set {
-	return region_set(field, col_i = i, max_cols = i + 1)
+	return region_set(field, col_i = i, max_cols = 1)
 }
 
 cell_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
