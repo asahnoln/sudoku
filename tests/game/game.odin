@@ -66,25 +66,6 @@ valid_col :: proc(t: ^testing.T) {
 }
 
 @(test)
-left_set :: proc(t: ^testing.T) {
-	nums :: bit_set[1 ..= 9]
-	full: nums = {1, 2, 3, 4, 5, 6, 7, 8, 9}
-
-	// 1 2 3 4 5 6 7 8 9
-	// 4 5 - - - - - - -
-	// 7 ? - - - - - - -
-	// 2 1
-	// 3 -
-	// 6 -
-	// 5 3
-	// 8 6
-	// 9 -
-
-	log.infof("left %v", full - {7} - {1, 2, 3, 4, 5, 7} - {2, 5, 1, 3, 6})
-
-}
-
-@(test)
 square_set :: proc(t: ^testing.T) {
 	set := game.square_set(
 	{ 	//
@@ -93,6 +74,7 @@ square_set :: proc(t: ^testing.T) {
 		{7, 0, 0, 1},
 		{1, 1, 1, 1},
 	},
+	{0, 0},
 	)
 
 	testing.expect_value(t, set, game.Numbers_Set{1, 2, 3, 4, 7})
@@ -128,22 +110,35 @@ col_set :: proc(t: ^testing.T) {
 	testing.expect_value(t, set, game.Numbers_Set{1, 2, 7})
 }
 
+@(test)
 cell_set :: proc(t: ^testing.T) {
-	set := game.cell_set(
-		{ 	//
-			{1, 2, 3, 4, 5, 6, 7, 8, 9},
-			{4, 5, 0, 0, 0, 0, 0, 0, 0},
-			{7, 0, 0, 0, 0, 0, 0, 0, 0},
-			{2, 1, 0, 0, 0, 0, 0, 0, 0},
-			{3, 0, 0, 0, 0, 0, 0, 0, 0},
-			{6, 0, 0, 0, 0, 0, 0, 0, 0},
-			{5, 3, 0, 0, 0, 0, 0, 0, 0},
-			{8, 6, 0, 0, 0, 0, 0, 0, 0},
-			{9, 0, 0, 0, 0, 0, 0, 0, 0},
-		},
-		2,
-		1,
-	)
+	field := game.Field { 	//
+		{1, 2, 3, 4, 5, 6, 7, 8, 9},
+		{4, 5, 0, 0, 0, 0, 0, 0, 0},
+		{7, 0, 0, 0, 0, 0, 0, 0, 0},
+		{2, 1, 0, 3, 0, 0, 0, 0, 0},
+		{3, 0, 0, 0, 0, 0, 0, 0, 0},
+		{6, 0, 0, 0, 0, 0, 0, 0, 0},
+		{5, 3, 0, 0, 0, 0, 0, 0, 0},
+		{8, 6, 0, 0, 0, 0, 0, 0, 0},
+		{9, 0, 0, 0, 0, 0, 0, 0, 0},
+	}
 
+	set := game.cell_set(field, 2, 1)
 	testing.expect_value(t, set, game.Numbers_Set{8, 9})
+
+	set = game.cell_set(field, 3, 4)
+	testing.expect_value(t, set, game.Numbers_Set{4, 6, 7, 8, 9})
+}
+
+@(test)
+find_closest_square_pos :: proc(t: ^testing.T) {
+	pos := game.find_square_pos({1, 1})
+	testing.expect_value(t, pos, game.Pos{0, 0})
+
+	pos = game.find_square_pos({3, 4})
+	testing.expect_value(t, pos, game.Pos{3, 3})
+
+	pos = game.find_square_pos({7, 8})
+	testing.expect_value(t, pos, game.Pos{6, 6})
 }
