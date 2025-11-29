@@ -38,6 +38,33 @@ generate_lines :: proc(t: ^testing.T) {
 	}
 }
 
+@(test)
+valid_square :: proc(t: ^testing.T) {
+	rand.reset(1)
+	err := game.valid_square(
+	[][]int { 	//
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	},
+	)
+
+	testing.expect(t, err == nil)
+}
+
+@(test)
+invalid_square :: proc(t: ^testing.T) {
+	rand.reset(1)
+	err := game.valid_square(
+	[][]int { 	//
+		{1, 2, 3},
+		{4, 5, 2},
+		{7, 8, 9},
+	},
+	)
+
+	testing.expect_value(t, err, game.Square_Error{n = 2, pos1 = {0, 1}, pos2 = {1, 2}})
+}
 
 // Sudoku field
 // 1 2 3 | 4 5 6 | 7 8 9

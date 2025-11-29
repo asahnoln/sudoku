@@ -39,3 +39,30 @@ valid_cols :: proc(ls: Lines) -> bool {
 
 	return true
 }
+
+Error :: union {
+	Square_Error,
+}
+
+Square_Error :: struct {
+	n:    int,
+	pos1: [2]int,
+	pos2: [2]int,
+}
+
+valid_square :: proc(sq: [][]int) -> Error {
+	check := make(map[int][2]int)
+	defer delete(check)
+
+	for row_i in 0 ..< 3 {
+		for col_i in 0 ..< 3 {
+			n := sq[row_i][col_i]
+			if n in check {
+				return Square_Error{n, check[n], {row_i, col_i}}
+			}
+			check[n] = {row_i, col_i}
+		}
+	}
+
+	return nil
+}
