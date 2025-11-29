@@ -1,8 +1,5 @@
 package game_test
 
-import "core:crypto/_fiat/field_curve25519"
-import "core:log"
-import "core:math/rand"
 import "core:testing"
 import "src:game"
 

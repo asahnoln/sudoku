@@ -1,10 +1,12 @@
 package game
 
+Pos :: [2]int
+Field :: [][]int
+Numbers_Set :: bit_set[1 ..= 9]
+
 Error :: union {
 	Duplication_Error,
 }
-
-Pos :: [2]int
 
 Duplication_Error :: struct {
 	n:    int,
@@ -13,8 +15,8 @@ Duplication_Error :: struct {
 }
 
 SQUARE_SIZE :: 3
-
-Field :: [][]int
+NUMBERS_COUNT :: 9
+ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 @(private)
 valid_region :: proc(reg: Field, max_rows: int, max_cols: int) -> Error {
@@ -48,11 +50,6 @@ valid_row :: proc(l: []int) -> Error {
 valid_col :: proc(l: Field) -> Error {
 	return valid_region(l, len(l), 1)
 }
-
-Numbers_Set :: bit_set[1 ..= 9]
-
-NUMBERS_COUNT :: 9
-ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 @(private)
 region_set :: proc(
