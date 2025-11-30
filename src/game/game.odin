@@ -62,39 +62,6 @@ destroy_field :: proc(f: Field, allocator := context.allocator) {
 }
 
 @(private)
-valid_region :: proc(reg: Field, max_rows: int, max_cols: int) -> Error {
-	check := make(map[int]Pos)
-	defer delete(check)
-
-	row_final := min(max_rows, len(reg))
-	for row_i in 0 ..< row_final {
-		col_final := min(max_cols, len(reg[row_i]))
-		for col_i in 0 ..< col_final {
-			n := reg[row_i][col_i]
-			if n in check {
-				return Duplication_Error{n, check[n], {row_i, col_i}}
-			}
-
-			check[n] = {row_i, col_i}
-		}
-	}
-
-	return nil
-}
-
-valid_square :: proc(sq: Field) -> Error {
-	return valid_region(sq, SQUARE_SIZE, SQUARE_SIZE)
-}
-
-valid_row :: proc(l: []int) -> Error {
-	return valid_region({l}, 1, len(l))
-}
-
-valid_col :: proc(l: Field) -> Error {
-	return valid_region(l, len(l), 1)
-}
-
-@(private)
 region_set :: proc(
 	reg: Field,
 	row_i := 0,
