@@ -1,7 +1,7 @@
 package main
 
 import "core:fmt"
-import "core:os/os2"
+import "core:sys/posix"
 import "src:game"
 import "src:input"
 import "src:ui"
@@ -22,7 +22,39 @@ temp_loop_create :: proc() -> game.Field {
 	return f
 }
 
+get_immediate_key :: proc() -> (key: u8, ok: bool) {
+	old_term, new_term: posix.termios
+
+	// Get current terminal settings
+	if posix.tcgetattr(posix.STDIN_FILENO, &old_term) != .OK {
+		return 0, false
+	}
+
+	new_term = old_term
+
+	// Disable canonical mode and echo
+	new_term.c_lflag -= {.ICANON, .ECHO}
+
+	// Apply settings immediately
+	posix.tcsetattr(posix.STDIN_FILENO, .TCSANOW, &new_term)
+
+	// Read single character
+	buffer: [1]u8
+	bytes_read := posix.read(posix.STDIN_FILENO, raw_data(buffer[:]), 1)
+
+	// Restore original settings
+	posix.tcsetattr(posix.STDIN_FILENO, .TCSANOW, &old_term)
+
+	if bytes_read > 0 {
+		return buffer[0], true
+	}
+	return 0, false
+}
+
 main :: proc() {
+	// Hide cursor
+	fmt.print("\x1b[?25l")
+
 	f := temp_loop_create()
 	defer game.destroy_field(f)
 
@@ -32,13 +64,18 @@ main :: proc() {
 		s := ui.output_field(f, p)
 		defer delete(s)
 
+		// Clear terminal
 		fmt.print("\x1b[2J\x1b[H")
+
 		fmt.print(s)
 
-		inp: [4]byte
-		_, _ = os2.read(os2.stdin, inp[:])
+		// inp: [2]byte
+		// _, _ = os2.read(os2.stdin, inp[:])
+		//
+		// p = input.new_pos(p, input.parse_direction(inp[0]))
 
-		p = input.new_pos(p, input.parse_direction(inp[0]))
+		k, _ := get_immediate_key()
+		p = input.new_pos(p, input.parse_direction(k))
 	}
 
 }
