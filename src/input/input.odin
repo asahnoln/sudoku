@@ -35,3 +35,18 @@ new_pos :: proc(p: Pos, d: Direction) -> (n: Pos) {
 
 	return n
 }
+
+parse_direction :: proc(c: byte) -> Direction {
+	switch c {
+	case 'l':
+		return .Right
+	case 'h':
+		return .Left
+	case 'k':
+		return .Up
+	case 'j':
+		return .Down
+	}
+
+	return .Right
+}

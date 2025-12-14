@@ -36,3 +36,12 @@ position :: proc(t: ^testing.T) {
 		)
 	}
 }
+
+@(test)
+parse :: proc(t: ^testing.T) {
+	// TODO: Changet to table tests and more keys and errors
+	testing.expect(t, input.parse_direction('l') == .Right)
+	testing.expect(t, input.parse_direction('h') == .Left)
+	testing.expect(t, input.parse_direction('k') == .Up)
+	testing.expect(t, input.parse_direction('j') == .Down)
+}
