@@ -38,15 +38,6 @@ position :: proc(t: ^testing.T) {
 }
 
 @(test)
-parse_dir :: proc(t: ^testing.T) {
-	// TODO: Change to table tests and more keys and errors
-	testing.expect(t, input.parse_direction('l') == .Right)
-	testing.expect(t, input.parse_direction('h') == .Left)
-	testing.expect(t, input.parse_direction('k') == .Up)
-	testing.expect(t, input.parse_direction('j') == .Down)
-}
-
-@(test)
 parse :: proc(t: ^testing.T) {
 	tests := []struct {
 		k:    byte,
@@ -60,7 +51,7 @@ parse :: proc(t: ^testing.T) {
 		{'q', .Quit},
 		// TODO: Implement other commands
 		// {27, .Quit},
-		//   {'1', .Enter_Symbol},
+		// {'1', input.Enter_Number{1}},
 		//   {'2', .Enter_Symbol},
 		//   {'3', .Enter_Symbol},
 		//   {'4', .Enter_Symbol},
