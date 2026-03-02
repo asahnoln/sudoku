@@ -58,10 +58,10 @@ main :: proc() {
 	f := temp_loop_create()
 	defer game.destroy_field(f)
 
-	p := input.Pos{0, 0}
+	g := game.Game{}
 
-	for {
-		s := ui.output_field(f, p)
+	for !g.quit {
+		s := ui.output_field(f, g.pos)
 		defer delete(s)
 
 		// Clear terminal
@@ -75,7 +75,9 @@ main :: proc() {
 		// p = input.new_pos(p, input.parse_direction(inp[0]))
 
 		k, _ := get_immediate_key()
-		p = input.new_pos(p, input.parse_direction(k))
+		c := input.parse(k)
+		game.play(&g, c)
 	}
 
+	fmt.print("\n\nBYE-BYE!\n\n")
 }

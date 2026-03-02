@@ -14,3 +14,9 @@
 
 - Position
 - Number
+
+## Generation algo
+
+Randomize first row 1-9
+
+Separate by 3s. 3s randomiz in first squares. Then shift the row by 1 and repeat process for the second row of squares etc

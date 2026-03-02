@@ -2,6 +2,19 @@ package input
 
 MAX :: 9
 
+Cmd :: union {
+	SimpleCmd,
+	Move,
+}
+
+SimpleCmd :: enum {
+	Quit,
+}
+
+Move :: struct {
+	dir: Direction,
+}
+
 Pos :: [2]int
 
 Direction :: enum {
@@ -49,4 +62,21 @@ parse_direction :: proc(c: byte) -> Direction {
 	}
 
 	return .Right
+}
+
+parse :: proc(c: byte) -> Cmd {
+	switch c {
+	case 'l':
+		return Move{.Right}
+	case 'h':
+		return Move{.Left}
+	case 'k':
+		return Move{.Up}
+	case 'j':
+		return Move{.Down}
+	case 'q':
+		return .Quit
+	}
+
+	return nil
 }

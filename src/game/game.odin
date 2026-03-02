@@ -1,6 +1,12 @@
 package game
 
 import "core:math/rand"
+import "src:input"
+
+Game :: struct {
+	pos:  Pos,
+	quit: bool,
+}
 
 Pos :: [2]int
 Field :: []Row
@@ -41,7 +47,7 @@ generate_field :: proc(
 
 	for &r, row_i in f {
 		for &c, col_i in r {
-			set := cell_set(f, row_i, col_i)
+			set := cell_possible_set(f, row_i, col_i)
 			x, ok := rand.choice_bit_set(set, gen)
 			if !ok {
 				destroy_field(f, allocator)
@@ -94,7 +100,7 @@ col_set :: proc(field: Field, i: int) -> Numbers_Set {
 	return region_set(field, col_i = i, max_cols = 1)
 }
 
-cell_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
+cell_possible_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
 	sq_p := find_square_pos({row_i, col_i})
 	s := square_set(field, sq_p)
 	r := row_set(field, row_i)
@@ -119,4 +125,16 @@ find_square_pos :: proc(p: Pos) -> (sq_p: Pos) {
 	}
 
 	return sq_p
+}
+
+play :: proc(g: ^Game, cmd: input.Cmd) {
+	#partial switch c in cmd {
+	case input.Move:
+		g.pos = input.new_pos(g.pos, c.dir)
+	case input.SimpleCmd:
+		switch c {
+		case .Quit:
+			g.quit = true
+		}
+	}
 }

@@ -38,10 +38,41 @@ position :: proc(t: ^testing.T) {
 }
 
 @(test)
-parse :: proc(t: ^testing.T) {
-	// TODO: Changet to table tests and more keys and errors
+parse_dir :: proc(t: ^testing.T) {
+	// TODO: Change to table tests and more keys and errors
 	testing.expect(t, input.parse_direction('l') == .Right)
 	testing.expect(t, input.parse_direction('h') == .Left)
 	testing.expect(t, input.parse_direction('k') == .Up)
 	testing.expect(t, input.parse_direction('j') == .Down)
+}
+
+@(test)
+parse :: proc(t: ^testing.T) {
+	tests := []struct {
+		k:    byte,
+		want: input.Cmd,
+	} {
+		{'a', nil}, //
+		{'l', input.Move{.Right}},
+		{'h', input.Move{.Left}},
+		{'k', input.Move{.Up}},
+		{'j', input.Move{.Down}},
+		{'q', .Quit},
+		// TODO: Implement other commands
+		// {27, .Quit},
+		//   {'1', .Enter_Symbol},
+		//   {'2', .Enter_Symbol},
+		//   {'3', .Enter_Symbol},
+		//   {'4', .Enter_Symbol},
+		//   {'5', .Enter_Symbol},
+		//   {'6', .Enter_Symbol},
+		//   {'7', .Enter_Symbol},
+		//   {'8', .Enter_Symbol},
+		//   {'9', .Enter_Symbol},
+	}
+
+	for tt in tests {
+		got := input.parse(tt.k)
+		testing.expectf(t, got == tt.want, "for %v: got %v; want %v", tt.k, got, tt.want)
+	}
 }
