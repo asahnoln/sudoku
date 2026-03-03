@@ -7,7 +7,12 @@ import "src:input"
 SELECTED :: "\x1b[44;37m"
 RESET :: "\x1b[0m"
 
-output_field :: proc(f: game.Field, p: input.Pos, allocator := context.allocator) -> string {
+output_field :: proc(
+	f: game.Field,
+	p: input.Pos,
+	o: [][]bool,
+	allocator := context.allocator,
+) -> string {
 	b := strings.builder_make(allocator)
 
 	for r, row_i in f {
@@ -25,7 +30,11 @@ output_field :: proc(f: game.Field, p: input.Pos, allocator := context.allocator
 				strings.write_string(&b, SELECTED)
 			}
 
-			strings.write_int(&b, c)
+			if !o[row_i][col_i] {
+				strings.write_rune(&b, 'x')
+			} else {
+				strings.write_int(&b, c)
+			}
 
 			if p == ({row_i, col_i}) {
 				strings.write_string(&b, RESET)
