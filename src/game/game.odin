@@ -4,8 +4,10 @@ import "core:math/rand"
 import "src:input"
 
 Game :: struct {
-	pos:  Pos,
-	quit: bool,
+	field:  Field,
+	opened: [][]bool,
+	pos:    Pos,
+	quit:   bool,
 }
 
 Pos :: [2]int
@@ -128,7 +130,9 @@ find_square_pos :: proc(p: Pos) -> (sq_p: Pos) {
 }
 
 play :: proc(g: ^Game, cmd: input.Cmd) {
-	#partial switch c in cmd {
+	switch c in cmd {
+	case input.Enter_Number:
+		open_cell(g, c.v)
 	case input.Move:
 		g.pos = input.new_pos(g.pos, c.dir)
 	case input.SimpleCmd:
@@ -137,4 +141,13 @@ play :: proc(g: ^Game, cmd: input.Cmd) {
 			g.quit = true
 		}
 	}
+}
+
+check_number :: proc(g: ^Game, n: int) -> bool {
+	return g.field[g.pos.x][g.pos.y] == n
+}
+
+open_cell :: proc(g: ^Game, n: int) {
+	o := g.opened[g.pos.x][g.pos.y]
+	g.opened[g.pos.x][g.pos.y] = o || check_number(g, n)
 }

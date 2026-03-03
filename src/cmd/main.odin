@@ -10,10 +10,8 @@ import "src:ui"
 temp_loop_create :: proc() -> game.Field {
 	f: game.Field
 	err: game.Options_Exhausted_Error
-	i := 0
 	for {
 		f, err = game.generate_field()
-		i += 1
 		if err == nil {
 			break
 		}

@@ -1,10 +1,12 @@
 package input
 
+import "core:strconv"
 MAX :: 9
 
 Cmd :: union {
 	SimpleCmd,
 	Move,
+	Enter_Number,
 }
 
 SimpleCmd :: enum {
@@ -13,6 +15,10 @@ SimpleCmd :: enum {
 
 Move :: struct {
 	dir: Direction,
+}
+
+Enter_Number :: struct {
+	v: int,
 }
 
 Pos :: [2]int
@@ -59,8 +65,11 @@ parse :: proc(c: byte) -> Cmd {
 		return Move{.Up}
 	case 'j':
 		return Move{.Down}
-	case 'q':
+	case 'q', 27:
 		return .Quit
+	case '1', '2', '3', '4', '5', '6', '7', '8', '9':
+		v, _ := strconv.digit_to_int(cast(rune)c)
+		return Enter_Number{v}
 	}
 
 	return nil

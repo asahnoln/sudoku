@@ -37,6 +37,7 @@ position :: proc(t: ^testing.T) {
 	}
 }
 
+// TODO:: Map instead of proc
 @(test)
 parse :: proc(t: ^testing.T) {
 	tests := []struct {
@@ -49,17 +50,16 @@ parse :: proc(t: ^testing.T) {
 		{'k', input.Move{.Up}},
 		{'j', input.Move{.Down}},
 		{'q', .Quit},
-		// TODO: Implement other commands
-		// {27, .Quit},
-		// {'1', input.Enter_Number{1}},
-		//   {'2', .Enter_Symbol},
-		//   {'3', .Enter_Symbol},
-		//   {'4', .Enter_Symbol},
-		//   {'5', .Enter_Symbol},
-		//   {'6', .Enter_Symbol},
-		//   {'7', .Enter_Symbol},
-		//   {'8', .Enter_Symbol},
-		//   {'9', .Enter_Symbol},
+		{27, .Quit},
+		{'1', input.Enter_Number{1}},
+		{'2', input.Enter_Number{2}},
+		{'3', input.Enter_Number{3}},
+		{'4', input.Enter_Number{4}},
+		{'5', input.Enter_Number{5}},
+		{'6', input.Enter_Number{6}},
+		{'7', input.Enter_Number{7}},
+		{'8', input.Enter_Number{8}},
+		{'9', input.Enter_Number{9}},
 	}
 
 	for tt in tests {
