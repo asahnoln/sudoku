@@ -108,22 +108,14 @@ new_field :: proc(t: ^testing.T) {
 	}
 }
 
+@(test)
+enter :: proc(t: ^testing.T) {
+	g := game.Game {
+		field      = {{0, 0, 0}},
+		field_mask = {{false, false, false}},
+	}
 
-// main :: proc() {
-// 	g := game.Game{}
-//
-// 	game.new_field(g)
-//
-// 	ok := game.enter(g, {1, 1}, 5)
-// 	if !ok {
-// 		ok = game.enter(g, {1, 1}, 6)
-// 	}
-//
-// 	switch g.state {
-// 	case .Win:
-// 	case .Playing:
-// 	case .Lost:
-// 	}
-//
-//
-// }
+	game.enter(&g, {1, 1}, 5)
+
+	testing.expect_value(t, g.field_mask[0][0], true)
+}

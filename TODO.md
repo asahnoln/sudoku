@@ -27,3 +27,26 @@
 Randomize first row 1-9
 
 Separate by 3s. 3s randomiz in first squares. Then shift the row by 1 and repeat process for the second row of squares etc
+
+## API
+
+```odin
+main :: proc() {
+ g := game.Game{}
+
+  // Implemented
+ game.new_field(g)
+
+  // TODO:
+ ok := game.enter(g, {1, 1}, 5)
+ if !ok {
+  ok = game.enter(g, {1, 1}, 6)
+ }
+
+ switch g.state {
+ case .Win:
+ case .Playing:
+ case .Lost:
+ }
+}
+```
