@@ -53,27 +53,12 @@ main :: proc() {
 	// Hide cursor
 	fmt.print("\x1b[?25l")
 
-	f := temp_loop_create()
-	o := [][]bool {
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-		{true, false, true, true, true, false, true, false, true},
-	}
-	defer game.destroy_field(f)
 
-	g := game.Game {
-		field  = f,
-		opened = o,
-	}
+	g := game.Game{}
+	game.prepare(&g)
 
 	for !g.quit {
-		s := ui.output_field(f, g.pos, o)
+		s := ui.output_field(g.field, g.pos, g.field_mask)
 		defer delete(s)
 
 		// Clear terminal

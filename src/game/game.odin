@@ -4,26 +4,21 @@ import "core:math/rand"
 import "src:input"
 
 Game :: struct {
-	field:  Field,
-	opened: [][]bool,
-	pos:    Pos,
-	quit:   bool,
+	field:      Field,
+	field_mask: [][]bool,
+	pos:        Pos,
+	quit:       bool,
 }
 
 Pos :: [2]int
-Field :: []Row
+
 Row :: []int
+Field :: []Row
+
+Row_Mask :: []bool
+Field_Mask :: []Row_Mask
+
 Numbers_Set :: bit_set[1 ..= 9]
-
-Error :: union {
-	Duplication_Error,
-}
-
-Duplication_Error :: struct {
-	n:    int,
-	pos1: Pos,
-	pos2: Pos,
-}
 
 // TODO: This is only to test if force filling works at all
 Options_Exhausted_Error :: enum {
@@ -34,6 +29,20 @@ Options_Exhausted_Error :: enum {
 SQUARE_SIZE :: 3
 NUMBERS_COUNT :: 9
 ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+prepare :: proc(g: ^Game, gen := context.random_generator, allocator := context.allocator) {
+	f: Field
+	err: Options_Exhausted_Error
+	for {
+		f, err = generate_field(gen, allocator)
+		if err == nil {
+			break
+		}
+	}
+
+	g.field = f
+	g.field_mask = generate_field_mask(gen, allocator)
+}
 
 generate_field :: proc(
 	gen := context.random_generator,
@@ -61,8 +70,25 @@ generate_field :: proc(
 
 	return f, nil
 }
+generate_field_mask :: proc(
+	gen := context.random_generator,
+	allocator := context.allocator,
+) -> Field_Mask {
+	f := make(Field_Mask, NUMBERS_COUNT, allocator)
+	for i in 0 ..< NUMBERS_COUNT {
+		f[i] = make(Row_Mask, NUMBERS_COUNT, allocator)
+	}
 
-destroy_field :: proc(f: Field, allocator := context.allocator) {
+	for &r in f {
+		for &c in r {
+			c = rand.choice([]bool{true, false})
+		}
+	}
+
+	return f
+}
+
+destroy_field :: proc(f: $T/[][]$E, allocator := context.allocator) {
 	for r in f {
 		delete(r, allocator)
 	}
@@ -148,6 +174,6 @@ check_number :: proc(g: ^Game, n: int) -> bool {
 }
 
 open_cell :: proc(g: ^Game, n: int) {
-	o := g.opened[g.pos.x][g.pos.y]
-	g.opened[g.pos.x][g.pos.y] = o || check_number(g, n)
+	o := g.field_mask[g.pos.x][g.pos.y]
+	g.field_mask[g.pos.x][g.pos.y] = o || check_number(g, n)
 }

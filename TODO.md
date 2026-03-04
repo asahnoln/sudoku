@@ -8,15 +8,14 @@
 - [x] Hide some of the numbers
 - [x] Player can place a number in a cell
 - [x] Game should compare place number against the real one
-- [ ] Find efficient algo to generate field
-- [ ] Refactor opened field
-- [ ] Refactor separate output function
+- [x] Generate open field
 - [ ] Signal wrong input
 - [ ] Signal winning
+- [ ] Refactor separate output function
 - [ ] How to TDD terminal input???
 - [ ] TUI menu?
-- [ ] Generate open field
 - [ ] Enum cells instead of int?
+- [ ] Find efficient algo to generate field
 
 ## Input
 

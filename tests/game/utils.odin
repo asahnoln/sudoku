@@ -9,13 +9,14 @@ import "src:game"
 // NOTE: This is only to test if force filling works at all
 @(test)
 generate_field_until_done :: proc(t: ^testing.T) {
-	rand.reset(1)
+	seed := 266
+	rand.reset(cast(u64)seed)
 	f: game.Field
 	err: game.Options_Exhausted_Error
-	i := 0
+	gen_cycle := 0
 	for {
 		f, err = game.generate_field()
-		i += 1
+		gen_cycle += 1
 		if err == nil {
 			break
 		}
@@ -24,6 +25,7 @@ generate_field_until_done :: proc(t: ^testing.T) {
 	defer game.destroy_field(f)
 
 	testing.expect(t, err == nil)
+	testing.expectf(t, gen_cycle == 1, "for seed %v got %v cycles; want 1", seed, gen_cycle)
 }
 
 // @(test)
