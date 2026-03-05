@@ -16,6 +16,8 @@
 - [x] Generate open field
 - [x] Signal wrong input
 - [x] Signal winning
+- [ ] When lost - open all fields
+- [ ] Emphasize by color opened fields in the end
 - [ ] Revise main code - what can be TDDd?
 - [ ] Refactor separate output function
 - [ ] How to TDD terminal input???
