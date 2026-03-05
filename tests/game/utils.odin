@@ -9,7 +9,7 @@ import "src:game"
 // NOTE: This is only to test if force filling works at all
 @(test)
 generate_field_until_done :: proc(t: ^testing.T) {
-	seed := 266
+	seed := 173
 	rand.reset(cast(u64)seed)
 	f: game.Field
 	err: game.Options_Exhausted_Error

@@ -1,5 +1,11 @@
 # TODO
 
+## Order of implementation
+
+1. API (play in code)
+2. Terminal
+3. Window
+
 - [x] Generate game field according to rules
 - [x] Output the field
 - [x] Player can choose a cell
@@ -44,7 +50,7 @@ main :: proc() {
  }
 
  switch g.state {
- case .Win:
+ case .Won:
  case .Playing:
  case .Lost:
  }
