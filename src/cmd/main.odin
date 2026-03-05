@@ -54,27 +54,36 @@ main :: proc() {
 	fmt.print("\x1b[?25l")
 
 
-	g := game.Game{}
+	g := game.Game {
+		max_mistakes = 3,
+	}
 	game.prepare(&g)
 
-	for !g.quit {
+	main_loop: for !g.quit {
+
 		s := ui.output_field(g.field, g.pos, g.field_mask)
 		defer delete(s)
 
 		// Clear terminal
 		fmt.print("\x1b[2J\x1b[H")
+		fmt.println(s)
 
-		fmt.print(s)
+		fmt.printfln("\nMistakes: %d", g.mistakes)
 
-		// inp: [2]byte
-		// _, _ = os2.read(os2.stdin, inp[:])
-		//
-		// p = input.new_pos(p, input.parse_direction(inp[0]))
+		switch g.state {
+		case .Won:
+			fmt.print("\nGOOD JOB!")
+			break main_loop
+		case .Lost:
+			fmt.print("\nYOU LOST!")
+			break main_loop
+		case .Playing:
+		}
 
 		k, _ := get_immediate_key()
 		c := input.parse(k)
 		game.play(&g, c)
 	}
 
-	fmt.print("\n\nBYE-BYE!\n\n")
+	fmt.print("\n\nBYE-BYE!\n")
 }
