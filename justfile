@@ -9,8 +9,8 @@ test:
   odin test tests/ -all-packages {{collection}}
 
 build: test
-  odin build {{cmd}} {{collection}}
+  odin build {{cmd}} {{collection}} --vet 
 
 run input: test
-  odin run {{cmd}} {{collection}} -vet -- {{input}}
+  odin run {{cmd}} {{collection}} -- {{input}}
 
