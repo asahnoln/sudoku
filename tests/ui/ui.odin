@@ -1,52 +1,39 @@
 package ui_test
 
+import "core:math/rand"
+import "core:slice"
 import "core:testing"
 import "src:game"
 import "src:ui"
+import rl "vendor:raylib"
 
 @(test)
-output_field :: proc(t: ^testing.T) {
-	f := game.Field {
-		{1, 2, 3, 1, 2, 3, 1, 2, 3},
-		{4, 5, 6, 4, 5, 6, 4, 5, 6},
-		{7, 8, 9, 7, 8, 9, 7, 8, 9},
-		{1, 2, 3, 1, 2, 3, 1, 2, 3},
-		{4, 5, 6, 4, 5, 6, 4, 5, 6},
-		{7, 8, 9, 7, 8, 9, 7, 8, 9},
-		{1, 2, 3, 1, 2, 3, 1, 2, 3},
-		{4, 5, 6, 4, 5, 6, 4, 5, 6},
-		{7, 8, 9, 7, 8, 9, 7, 8, 9},
+output_field_graphical :: proc(t: ^testing.T) {
+	f := game.Field{{1, 2}, {4, 5}}
+	o := game.Field_Mask{{true, false}, {true, true}}
+
+	@(static) got: [dynamic]ui.Cell
+	got = make([dynamic]ui.Cell)
+	defer delete(got)
+
+	ui.output_field_graphical(f, o, {0, 0}, proc(c: ui.Cell) {
+		append(&got, c)
+	})
+
+	want := []ui.Cell {
+		{y = 0, x = 0, v = "1"},
+		{y = 0, x = 1, v = ""},
+		{y = 1, x = 0, v = "4"},
+		{y = 1, x = 1, v = "5"},
 	}
-	o := [][]bool {
-		{true, false, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-		{true, true, true, true, true, true, true, true, true},
-	}
+	testing.expectf(t, slice.equal(got[:], want), "got %v; want %v", got, want)
+}
 
-	s := ui.output_field(f, {0, 0}, o)
-	defer delete(s)
+@(test)
+is_pos_in_area :: proc(t: ^testing.T) {
+	ok := ui.is_pos_in_area({1, 1}, {0, 0, 10, 10})
+	testing.expect(t, ok)
 
-	testing.expect_value(
-		t,
-		s,
-		"\x1b[44;37m1\x1b[0m" +
-		` x 3 | 1 2 3 | 1 2 3
-4 5 6 | 4 5 6 | 4 5 6
-7 8 9 | 7 8 9 | 7 8 9
-------+-------+------
-1 2 3 | 1 2 3 | 1 2 3
-4 5 6 | 4 5 6 | 4 5 6
-7 8 9 | 7 8 9 | 7 8 9
-------+-------+------
-1 2 3 | 1 2 3 | 1 2 3
-4 5 6 | 4 5 6 | 4 5 6
-7 8 9 | 7 8 9 | 7 8 9`,
-	)
-
+	ok = ui.is_pos_in_area({15, 15}, {0, 0, 10, 10})
+	testing.expect(t, !ok)
 }

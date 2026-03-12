@@ -6,6 +6,8 @@
 2. [x] Terminal
 3. [ ] Window
 
+how to TDD UI?
+
 - [x] Generate game field according to rules
 - [x] Output the field
 - [x] Player can choose a cell

@@ -5,6 +5,8 @@ import "core:sys/posix"
 import "src:game"
 import "src:input"
 import "src:ui"
+import "vendor:microui"
+import rl "vendor:raylib"
 
 // TODO: Just for testing purposes, need to find new generation algo
 temp_loop_create :: proc() -> game.Field {
@@ -50,9 +52,63 @@ get_immediate_key :: proc() -> (key: u8, ok: bool) {
 }
 
 main :: proc() {
+	main_ui()
+	// main_terminal()
+}
+
+main_ui :: proc() {
+	g := game.Game {
+		max_mistakes = 3,
+	}
+	game.prepare(&g)
+
+	rl.InitWindow(500, 500, "SUDOKU")
+	defer rl.CloseWindow()
+
+	rl.SetTargetFPS(60)
+
+	for !g.quit {
+		rl.BeginDrawing()
+
+		for r in g.field {
+			for c in r {
+
+			}
+		}
+		defer rl.EndDrawing()
+	}
+}
+
+// main_ui :: proc() {
+// 	ctx := &microui.Context{}
+// 	microui.init(ctx)
+//
+// 	ctx.text_width()
+// 	if (microui.begin_window(ctx, "My Window", microui.Rect{10, 10, 140, 86})) {
+// 		microui.layout_row(ctx, {60, -1}, 0)
+//
+// 		microui.label(ctx, "First:")
+// 		if (microui.button(ctx, "Button1")) {
+// 			printf("Button1 pressed\n")
+// 		}
+//
+// 		microui.label(ctx, "Second:")
+// 		if (microui.button(ctx, "Button2")) {
+// 			microui.open_popup(ctx, "My Popup")
+// 		}
+//
+// 		if (microui.begin_popup(ctx, "My Popup")) {
+// 			microui.label(ctx, "Hello world!")
+// 			microui.end_popup(ctx)
+// 		}
+//
+// 		microui.end_window(ctx)
+// 	}
+// }
+
+main_terminal :: proc() {
 	// Hide cursor
 	fmt.print("\x1b[?25l")
-
 
 	g := game.Game {
 		max_mistakes = 3,
@@ -60,7 +116,6 @@ main :: proc() {
 	game.prepare(&g)
 
 	main_loop: for !g.quit {
-
 		s := ui.output_field(g.field, g.pos, g.field_mask)
 		defer delete(s)
 

@@ -17,17 +17,19 @@ generate_field :: proc(
 	for &r, row_i in f {
 		for &c, col_i in r {
 			set := cell_possible_set(f, row_i, col_i)
-			x, ok := rand.choice_bit_set(set, gen)
+
+			ok: bool
+			c, ok = rand.choice_bit_set(set, gen)
 			if !ok {
 				destroy_field(f, allocator)
 				return nil, Options_Exhausted_Error.NoOptionsLeft
 			}
-			c = x
 		}
 	}
 
 	return f, nil
 }
+
 generate_field_mask :: proc(
 	gen := context.random_generator,
 	allocator := context.allocator,

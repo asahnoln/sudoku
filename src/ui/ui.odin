@@ -1,55 +1,34 @@
 package ui
 
-import "core:strings"
+import "core:strconv"
 import "src:game"
-import "src:input"
+import rl "vendor:raylib"
 
-SELECTED :: "\x1b[44;37m"
-RESET :: "\x1b[0m"
+Cell :: struct {
+	x, y: int,
+	v:    string,
+}
 
-output_field :: proc(
+output_field_graphical :: proc(
 	f: game.Field,
-	p: input.Pos,
-	o: [][]bool,
-	allocator := context.allocator,
-) -> string {
-	b := strings.builder_make(allocator)
-
-	for r, row_i in f {
-		if row_i != 0 && row_i % game.SQUARE_SIZE == 0 {
-			strings.write_string(&b, "------+-------+------\n")
-		}
-
-		for c, col_i in r {
-			if col_i != 0 && col_i % game.SQUARE_SIZE == 0 {
-				strings.write_string(&b, "|")
-				strings.write_string(&b, " ")
-			}
-
-			if p == ({row_i, col_i}) {
-				strings.write_string(&b, SELECTED)
-			}
-
-			if !o[row_i][col_i] {
-				strings.write_rune(&b, 'x')
-			} else {
-				strings.write_int(&b, c)
-			}
-
-			if p == ({row_i, col_i}) {
-				strings.write_string(&b, RESET)
-
-			}
-
-			if col_i < len(r) - 1 {
-				strings.write_string(&b, " ")
-			}
-		}
-
-		if row_i < len(f) - 1 {
-			strings.write_string(&b, "\n")
+	m: game.Field_Mask,
+	p: game.Pos,
+	draw: proc(_: Cell),
+) {
+	for r, x in f {
+		for c, y in r {
+			buf: [4]byte
+			v := strconv.write_int(buf[:], cast(i64)c, 10)
+			draw({x = x, y = y, v = v})
 		}
 	}
+}
 
-	return strings.to_string(b)
+is_pos_in_area :: proc(pos: rl.Vector2, area: rl.Rectangle) -> bool {
+	return(
+		pos.x >= area.x &&
+		pos.x < area.x + area.width &&
+		pos.y >= area.y &&
+		pos.y < area.y + area.height \
+	)
 }
