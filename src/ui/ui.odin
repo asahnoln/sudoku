@@ -6,7 +6,7 @@ import rl "vendor:raylib"
 
 Cell :: struct {
 	x, y: int,
-	v:    string,
+	v:    int,
 }
 
 output_field_graphical :: proc(
@@ -15,10 +15,9 @@ output_field_graphical :: proc(
 	p: game.Pos,
 	draw: proc(_: Cell),
 ) {
-	for r, x in f {
-		for c, y in r {
-			buf: [4]byte
-			v := strconv.write_int(buf[:], cast(i64)c, 10)
+	for r, y in f {
+		for c, x in r {
+			v := c if m[y][x] else 0
 			draw({x = x, y = y, v = v})
 		}
 	}
