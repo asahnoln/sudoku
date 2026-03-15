@@ -1,6 +1,5 @@
 package ui
 
-import "core:strconv"
 import "src:game"
 import rl "vendor:raylib"
 
@@ -9,16 +8,19 @@ Cell :: struct {
 	v:    int,
 }
 
+Draw_Proc :: proc(lib: rawptr, c: Cell)
+
 output_field_graphical :: proc(
 	f: game.Field,
 	m: game.Field_Mask,
 	p: game.Pos,
-	draw: proc(_: Cell),
+	lib: rawptr,
+	draw: Draw_Proc,
 ) {
 	for r, y in f {
 		for c, x in r {
 			v := c if m[y][x] else 0
-			draw({x = x, y = y, v = v})
+			draw(lib, {x = x, y = y, v = v})
 		}
 	}
 }

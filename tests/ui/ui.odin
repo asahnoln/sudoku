@@ -21,7 +21,7 @@ output_field_graphical :: proc(t: ^testing.T) {
 	got = make([dynamic]ui.Cell)
 	defer delete(got)
 
-	ui.output_field_graphical(f, o, {0, 0}, proc(c: ui.Cell) {
+	ui.output_field_graphical(f, o, {0, 0}, nil, proc(lib: rawptr, c: ui.Cell) {
 		append(&got, c)
 	})
 

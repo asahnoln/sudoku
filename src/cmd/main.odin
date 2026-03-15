@@ -1,26 +1,12 @@
 package main
 
 import "core:fmt"
+import "core:math/rand"
 import "core:sys/posix"
 import "src:game"
 import "src:input"
 import "src:ui"
-import "vendor:microui"
 import rl "vendor:raylib"
-
-// TODO: Just for testing purposes, need to find new generation algo
-temp_loop_create :: proc() -> game.Field {
-	f: game.Field
-	err: game.Options_Exhausted_Error
-	for {
-		f, err = game.generate_field()
-		if err == nil {
-			break
-		}
-	}
-
-	return f
-}
 
 get_immediate_key :: proc() -> (key: u8, ok: bool) {
 	old_term, new_term: posix.termios
@@ -62,49 +48,23 @@ main_ui :: proc() {
 	}
 	game.prepare(&g)
 
-	rl.InitWindow(500, 500, "SUDOKU")
+	r := ui.Raylib {
+		width = 100,
+		draw  = rl.DrawRectangle,
+		text  = rl.DrawText,
+	}
+	rl.InitWindow(9 * r.width, 9 * r.width, "SUDOKU")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(60)
 
 	for !g.quit {
 		rl.BeginDrawing()
-
-		for r in g.field {
-			for c in r {
-
-			}
-		}
 		defer rl.EndDrawing()
+
+		ui.output_field_graphical(g.field, g.field_mask, g.pos, &r, ui.draw_raylib)
 	}
 }
-
-// main_ui :: proc() {
-// 	ctx := &microui.Context{}
-// 	microui.init(ctx)
-//
-// 	ctx.text_width()
-// 	if (microui.begin_window(ctx, "My Window", microui.Rect{10, 10, 140, 86})) {
-// 		microui.layout_row(ctx, {60, -1}, 0)
-//
-// 		microui.label(ctx, "First:")
-// 		if (microui.button(ctx, "Button1")) {
-// 			printf("Button1 pressed\n")
-// 		}
-//
-// 		microui.label(ctx, "Second:")
-// 		if (microui.button(ctx, "Button2")) {
-// 			microui.open_popup(ctx, "My Popup")
-// 		}
-//
-// 		if (microui.begin_popup(ctx, "My Popup")) {
-// 			microui.label(ctx, "Hello world!")
-// 			microui.end_popup(ctx)
-// 		}
-//
-// 		microui.end_window(ctx)
-// 	}
-// }
 
 main_terminal :: proc() {
 	// Hide cursor
