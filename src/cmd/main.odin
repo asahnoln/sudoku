@@ -1,7 +1,6 @@
 package main
 
 import "core:fmt"
-import "core:math/rand"
 import "core:sys/posix"
 import "src:game"
 import "src:input"

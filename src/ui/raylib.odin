@@ -3,13 +3,14 @@ package ui
 import "core:c"
 import "core:strconv"
 import "core:strings"
-import "vendor:raylib"
+import rl "vendor:raylib"
 
 Raylib :: struct {
-	width:     c.int,
-	text_size: c.int,
-	draw:      proc "c" (posX, posY: c.int, width, height: c.int, color: raylib.Color),
-	text:      proc "c" (text: cstring, posX, posY: c.int, fontSize: c.int, color: raylib.Color),
+	width:       c.int,
+	text_size:   c.int,
+	draw:        proc "c" (posX, posY: c.int, width, height: c.int, color: rl.Color),
+	draw_border: proc "c" (posX, posY: c.int, width, height: c.int, color: rl.Color),
+	text:        proc "c" (text: cstring, posX, posY: c.int, fontSize: c.int, color: rl.Color),
 }
 
 draw_raylib :: proc(lib: rawptr, cell: Cell) {
@@ -20,7 +21,7 @@ draw_raylib :: proc(lib: rawptr, cell: Cell) {
 		cast(c.int)cell.y * this.width,
 		this.width,
 		this.width,
-		raylib.GRAY,
+		rl.GRAY,
 	)
 
 	buf: [4]byte
@@ -33,6 +34,6 @@ draw_raylib :: proc(lib: rawptr, cell: Cell) {
 		cast(c.int)cell.x * this.width + (this.width / 2) - (this.text_size / 2),
 		cast(c.int)cell.y * this.width + (this.width / 2) - (this.text_size / 2),
 		this.text_size,
-		raylib.BLACK,
+		rl.BLACK,
 	)
 }

@@ -20,12 +20,21 @@ draw_raylib :: proc(t: ^testing.T) {
 	}
 
 	@(static) gotDraw := drawData{}
+	@(static) gotDraw := drawData{}
 	@(static) gotText := textData{}
 
 	rl := ui.Raylib {
 		width = 20,
 		text_size = 10,
 		draw = proc "c" (posX, posY: c.int, width, height: c.int, color: raylib.Color) {
+			gotDraw.posX = posX
+			gotDraw.posY = posY
+			gotDraw.width = width
+			gotDraw.height = height
+			gotDraw.color = color
+
+		},
+		draw_border = proc "c" (posX, posY: c.int, width, height: c.int, color: raylib.Color) {
 			gotDraw.posX = posX
 			gotDraw.posY = posY
 			gotDraw.width = width
