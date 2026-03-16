@@ -53,9 +53,10 @@ game_ui :: proc() {
 	game.prepare(&g)
 
 	r := ui.Raylib {
-		width = 100,
-		draw  = rl.DrawRectangle,
-		text  = rl.DrawText,
+		width     = 60,
+		text_size = 30,
+		draw      = rl.DrawRectangle,
+		text      = rl.DrawText,
 	}
 	rl.InitWindow(9 * r.width, 9 * r.width, "SUDOKU")
 	defer rl.CloseWindow()

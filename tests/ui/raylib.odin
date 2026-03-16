@@ -24,6 +24,7 @@ draw_raylib :: proc(t: ^testing.T) {
 
 	rl := ui.Raylib {
 		width = 20,
+		text_size = 10,
 		draw = proc "c" (posX, posY: c.int, width, height: c.int, color: raylib.Color) {
 			gotDraw.posX = posX
 			gotDraw.posY = posY
@@ -48,6 +49,11 @@ draw_raylib :: proc(t: ^testing.T) {
 		gotDraw,
 		drawData{posX = 0, posY = 0, width = 20, height = 20, color = raylib.GRAY},
 	)
+	testing.expect_value(
+		t,
+		gotText,
+		textData{text = "1", posX = 5, posY = 5, fontSize = 10, color = raylib.BLACK},
+	)
 
 	dp(&rl, {x = 1, y = 1, v = 1})
 	testing.expect_value(
@@ -55,12 +61,11 @@ draw_raylib :: proc(t: ^testing.T) {
 		gotDraw,
 		drawData{posX = 20, posY = 20, width = 20, height = 20, color = raylib.GRAY},
 	)
-	// testing.expect_value(t, textGot, textData{
-	//   text:    "1",
-	//   posX:    0,
-	//   posY:    0,
-	//   fontSize: 1,
-	//   color:   raylib.WHITE,
-	// })
+	testing.expect_value(
+		t,
+		gotText,
+		textData{text = "1", posX = 25, posY = 25, fontSize = 10, color = raylib.BLACK},
+	)
+
 
 }
