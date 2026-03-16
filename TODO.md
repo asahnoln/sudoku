@@ -18,6 +18,8 @@ how to TDD UI?
 - [x] Generate open field
 - [x] Signal wrong input
 - [x] Signal winning
+- [ ] Refactor input parse
+- [ ] Parse map instead of switch case
 - [ ] When lost - open all fields
 - [ ] Emphasize by color opened fields in the end
 - [ ] Revise main code - what can be TDDd?

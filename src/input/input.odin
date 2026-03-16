@@ -1,6 +1,8 @@
 package input
 
 import "core:strconv"
+import rl "vendor:raylib"
+
 MAX :: 9
 
 Cmd :: union {
@@ -55,7 +57,12 @@ new_pos :: proc(p: Pos, d: Direction) -> (n: Pos) {
 	return n
 }
 
-parse :: proc(c: byte) -> Cmd {
+parse :: proc {
+	parse_byte,
+	parse_raylib,
+}
+
+parse_byte :: proc(c: byte) -> Cmd {
 	switch c {
 	case 'l':
 		return Move{.Right}
@@ -67,7 +74,27 @@ parse :: proc(c: byte) -> Cmd {
 		return Move{.Down}
 	case 'q', 27:
 		return .Quit
-	case '1', '2', '3', '4', '5', '6', '7', '8', '9':
+	case '1' ..= '9':
+		v, _ := strconv.digit_to_int(cast(rune)c)
+		return Enter_Number{v}
+	}
+
+	return nil
+}
+
+parse_raylib :: proc(c: rl.KeyboardKey) -> Cmd {
+	#partial switch c {
+	case .L:
+		return Move{.Right}
+	case .H:
+		return Move{.Left}
+	case .K:
+		return Move{.Up}
+	case .J:
+		return Move{.Down}
+	case .Q, .ESCAPE:
+		return .Quit
+	case .ONE ..= .NINE:
 		v, _ := strconv.digit_to_int(cast(rune)c)
 		return Enter_Number{v}
 	}

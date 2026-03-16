@@ -38,11 +38,15 @@ get_immediate_key :: proc() -> (key: u8, ok: bool) {
 }
 
 main :: proc() {
-	main_ui()
-	// main_terminal()
+	game_ui()
+	// game_term()
 }
 
-main_ui :: proc() {
+game_ui :: proc() {
+	// TODO: Why this hack works? Without it err:
+	// Internal Compiler Error: Type_Info for 'u16' could not be found
+	fmt.print("\x1b[?25l")
+
 	g := game.Game {
 		max_mistakes = 3,
 	}
@@ -63,10 +67,14 @@ main_ui :: proc() {
 		defer rl.EndDrawing()
 
 		ui.output_field_graphical(g.field, g.field_mask, g.pos, &r, ui.draw_raylib)
+
+		c := input.parse(rl.GetKeyPressed())
+		game.play(&g, c)
 	}
 }
 
-main_terminal :: proc() {
+
+game_term :: proc() {
 	// Hide cursor
 	fmt.print("\x1b[?25l")
 
