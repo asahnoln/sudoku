@@ -67,6 +67,10 @@ game_ui :: proc() {
 		rl.BeginDrawing()
 		defer rl.EndDrawing()
 
+		if rl.IsMouseButtonPressed(.LEFT) {
+			g.pos = input.pos_from_mouse(rl.GetMouseX(), rl.GetMouseY(), r.width)
+		}
+
 		ui.output_field_graphical(g.field, g.field_mask, g.pos, &r, ui.draw_raylib)
 
 		c := input.parse(rl.GetKeyPressed())
