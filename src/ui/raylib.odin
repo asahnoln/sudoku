@@ -21,8 +21,19 @@ draw_raylib :: proc(lib: rawptr, cell: Cell) {
 		cast(c.int)cell.y * this.width,
 		this.width,
 		this.width,
-		rl.GRAY,
+		cell.s ? rl.BLUE : rl.GRAY,
 	)
+	this.draw_border(
+		cast(c.int)cell.x * this.width,
+		cast(c.int)cell.y * this.width,
+		this.width,
+		this.width,
+		rl.WHITE,
+	)
+
+	if cell.v == 0 {
+		return
+	}
 
 	buf: [4]byte
 	text := strconv.write_int(buf[:], cast(i64)cell.v, 10)

@@ -6,6 +6,7 @@ import rl "vendor:raylib"
 Cell :: struct {
 	x, y: int,
 	v:    int,
+	s:    bool,
 }
 
 Draw_Proc :: proc(lib: rawptr, c: Cell)
@@ -20,7 +21,7 @@ output_field_graphical :: proc(
 	for r, y in f {
 		for c, x in r {
 			v := c if m[y][x] else 0
-			draw(lib, {x = x, y = y, v = v})
+			draw(lib, {x = x, y = y, v = v, s = y == p.x && x == p.y})
 		}
 	}
 }

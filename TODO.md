@@ -18,6 +18,7 @@ how to TDD UI?
 - [x] Generate open field
 - [x] Signal wrong input
 - [x] Signal winning
+- [ ] Rewrite x and y (right now used x vertically and y horizontally)
 - [ ] Refactor input parse
 - [ ] Parse map instead of switch case
 - [ ] When lost - open all fields

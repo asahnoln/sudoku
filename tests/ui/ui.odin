@@ -1,13 +1,9 @@
 package ui_test
 
-import "core:fmt"
-import "core:log"
-import "core:math/rand"
 import "core:slice"
 import "core:testing"
 import "src:game"
 import "src:ui"
-import rl "vendor:raylib"
 
 @(test)
 output_field_graphical :: proc(t: ^testing.T) {
@@ -21,15 +17,15 @@ output_field_graphical :: proc(t: ^testing.T) {
 	got = make([dynamic]ui.Cell)
 	defer delete(got)
 
-	ui.output_field_graphical(f, o, {0, 0}, nil, proc(lib: rawptr, c: ui.Cell) {
+	ui.output_field_graphical(f, o, {1, 0}, nil, proc(lib: rawptr, c: ui.Cell) {
 		append(&got, c)
 	})
 
 	want := []ui.Cell {
-		{y = 0, x = 0, v = 1},
-		{y = 0, x = 1, v = 0},
-		{y = 1, x = 0, v = 4},
-		{y = 1, x = 1, v = 5},
+		{y = 0, x = 0, v = 1, s = false},
+		{y = 0, x = 1, v = 0, s = false},
+		{y = 1, x = 0, v = 4, s = true},
+		{y = 1, x = 1, v = 5, s = false},
 	}
 	testing.expectf(t, slice.equal(got[:], want), "got %v; want %v", got, want)
 }
