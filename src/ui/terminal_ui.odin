@@ -26,7 +26,7 @@ output_field :: proc(
 				strings.write_string(&b, " ")
 			}
 
-			if p == ({row_i, col_i}) {
+			if p == ({col_i, row_i}) {
 				strings.write_string(&b, SELECTED)
 			}
 
@@ -36,7 +36,7 @@ output_field :: proc(
 				strings.write_int(&b, c)
 			}
 
-			if p == ({row_i, col_i}) {
+			if p == ({col_i, row_i}) {
 				strings.write_string(&b, RESET)
 
 			}

@@ -6,8 +6,6 @@
 2. [x] Terminal
 3. [ ] Window
 
-how to TDD UI?
-
 - [x] Generate game field according to rules
 - [x] Output the field
 - [x] Player can choose a cell
@@ -18,9 +16,10 @@ how to TDD UI?
 - [x] Generate open field
 - [x] Signal wrong input
 - [x] Signal winning
+- [ ] Continue looking at code to refactor from enter_input proc
+- [ ] Rewrite x and y (right now used x vertically and y horizontally)
 - [ ] Draw big borders for big squares
 - [ ] Write button system?
-- [ ] Rewrite x and y (right now used x vertically and y horizontally)
 - [ ] Refactor input parse
 - [ ] Parse map instead of switch case
 - [ ] When lost - open all fields
@@ -31,6 +30,10 @@ how to TDD UI?
 - [ ] TUI menu?
 - [ ] Enum cells instead of int?
 - [ ] Find efficient algo to generate field
+
+## TODO UI
+
+- [ ]
 
 ## Input
 

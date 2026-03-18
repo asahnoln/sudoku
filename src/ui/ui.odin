@@ -21,7 +21,7 @@ output_field_graphical :: proc(
 	for r, y in f {
 		for c, x in r {
 			v := c if m[y][x] else 0
-			draw(lib, {x = x, y = y, v = v, s = y == p.x && x == p.y})
+			draw(lib, {x = x, y = y, v = v, s = x == p.x && y == p.y})
 		}
 	}
 }

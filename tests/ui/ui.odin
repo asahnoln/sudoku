@@ -17,15 +17,15 @@ output_field_graphical :: proc(t: ^testing.T) {
 	got = make([dynamic]ui.Cell)
 	defer delete(got)
 
-	ui.output_field_graphical(f, o, {1, 0}, nil, proc(lib: rawptr, c: ui.Cell) {
+	ui.output_field_graphical(f, o, {0, 1}, nil, proc(lib: rawptr, c: ui.Cell) {
 		append(&got, c)
 	})
 
 	want := []ui.Cell {
-		{y = 0, x = 0, v = 1, s = false},
-		{y = 0, x = 1, v = 0, s = false},
-		{y = 1, x = 0, v = 4, s = true},
-		{y = 1, x = 1, v = 5, s = false},
+		{x = 0, y = 0, v = 1, s = false},
+		{x = 1, y = 0, v = 0, s = false},
+		{x = 0, y = 1, v = 4, s = true},
+		{x = 1, y = 1, v = 5, s = false},
 	}
 	testing.expectf(t, slice.equal(got[:], want), "got %v; want %v", got, want)
 }

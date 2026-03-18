@@ -14,7 +14,7 @@ play :: proc(t: ^testing.T) {
 	} {
 		{input.Move{.Up}, proc(t: ^testing.T, g: game.Game) {
 				got := g.pos
-				want := game.Pos{0, 2}
+				want := game.Pos{2, 0}
 				testing.expectf(t, got == want, "for move left got pos %v; want %v", got, want)
 			}}, //
 		{.Quit, proc(t: ^testing.T, g: game.Game) {
@@ -33,7 +33,7 @@ play :: proc(t: ^testing.T) {
 		g := game.Game {
 			field      = {{9, 4, 2}, {3, 1, 5}},
 			field_mask = {{false, false, false}, {false, false, false}},
-			pos        = {1, 2},
+			pos        = {2, 1},
 		}
 		game.play(&g, tt.cmd)
 		tt.assert(t, g)
@@ -45,7 +45,7 @@ prepare :: proc(t: ^testing.T) {
 	g := game.Game{}
 
 	rand.reset(173) // NOTE: 173 gives 1 cycle
-	game.prepare(&g)
+	game.create_field(&g)
 	defer game.destroy_field(g.field)
 	defer game.destroy_field(g.field_mask)
 
@@ -97,22 +97,22 @@ prepare :: proc(t: ^testing.T) {
 }
 
 @(test)
-enter :: proc(t: ^testing.T) {
+enter_number :: proc(t: ^testing.T) {
 	g := game.Game {
-		field      = {{0, 0, 0}, {0, 5, 0}},
+		field      = {{0, 4, 0}, {0, 5, 0}},
 		field_mask = {{false, false, false}, {false, false, false}},
 	}
 
-	ok := game.enter(&g, {1, 1}, 4)
-	testing.expect_value(t, ok, false)
-	testing.expect_value(t, g.field_mask[1][1], false)
+	ok := game.enter_number(&g, {1, 0}, 4)
+	testing.expect_value(t, ok, true)
+	testing.expect_value(t, g.field_mask[0][1], true)
 
 
-	ok = game.enter(&g, {1, 1}, 5)
+	ok = game.enter_number(&g, {1, 1}, 5)
 	testing.expect_value(t, ok, true)
 	testing.expect_value(t, g.field_mask[1][1], true)
 
-	ok = game.enter(&g, {1, 1}, 6)
+	ok = game.enter_number(&g, {1, 1}, 6)
 	testing.expect_value(t, ok, false)
 	testing.expect_value(t, g.field_mask[1][1], true)
 }
@@ -127,13 +127,13 @@ state_won :: proc(t: ^testing.T) {
 
 	testing.expect_value(t, g.state, game.State.Playing)
 
-	_ = game.enter(&g, {0, 0}, 1)
+	_ = game.enter_number(&g, {0, 0}, 1)
 	testing.expect_value(t, g.state, game.State.Playing)
 
-	_ = game.enter(&g, {1, 1}, 9)
+	_ = game.enter_number(&g, {1, 1}, 9)
 	testing.expect_value(t, g.state, game.State.Playing)
 
-	_ = game.enter(&g, {1, 1}, 2)
+	_ = game.enter_number(&g, {1, 1}, 2)
 	testing.expect_value(t, g.state, game.State.Won)
 }
 
@@ -146,6 +146,6 @@ state_lost :: proc(t: ^testing.T) {
 		mistakes     = 2,
 	}
 
-	_ = game.enter(&g, {0, 0}, 1)
+	_ = game.enter_number(&g, {0, 0}, 1)
 	testing.expect_value(t, g.state, game.State.Lost)
 }

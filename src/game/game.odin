@@ -36,10 +36,10 @@ Options_Exhausted_Error :: enum {
 }
 
 SQUARE_SIZE :: 3
-NUMBERS_COUNT :: 9
 ALL_NUMBERS :: Numbers_Set{1, 2, 3, 4, 5, 6, 7, 8, 9}
+NUMBERS_COUNT :: 9
 
-prepare :: proc(g: ^Game, gen := context.random_generator, allocator := context.allocator) {
+create_field :: proc(g: ^Game, gen := context.random_generator, allocator := context.allocator) {
 	f: Field
 	err: Options_Exhausted_Error
 	for {
@@ -56,7 +56,7 @@ prepare :: proc(g: ^Game, gen := context.random_generator, allocator := context.
 play :: proc(g: ^Game, cmd: input.Cmd) {
 	switch c in cmd {
 	case input.Enter_Number:
-		enter(g, g.pos, c.v)
+		enter_number(g, g.pos, c.v)
 	case input.Move:
 		g.pos = input.new_pos(g.pos, c.dir)
 	case input.SimpleCmd:
@@ -67,9 +67,9 @@ play :: proc(g: ^Game, cmd: input.Cmd) {
 	}
 }
 
-enter :: proc(g: ^Game, p: Pos, n: int) -> (ok: bool) {
-	if g.field[p.x][p.y] == n {
-		g.field_mask[p.x][p.y] = true
+enter_number :: proc(g: ^Game, p: Pos, n: int) -> (ok: bool) {
+	if g.field[p.y][p.x] == n {
+		g.field_mask[p.y][p.x] = true
 		ok = true
 	} else {
 		g.mistakes += 1
