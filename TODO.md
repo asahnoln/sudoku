@@ -30,6 +30,7 @@
 - [ ] TUI menu?
 - [ ] Enum cells instead of int?
 - [ ] Find efficient algo to generate field
+- [ ] Process and return allocation errors
 
 ## TODO UI
 
@@ -52,10 +53,8 @@ Separate by 3s. 3s randomiz in first squares. Then shift the row by 1 and repeat
 main :: proc() {
  g := game.Game{}
 
-  // Implemented
  game.new_field(g)
 
-  // TODO:
  ok := game.enter(g, {1, 1}, 5)
  if !ok {
   ok = game.enter(g, {1, 1}, 6)

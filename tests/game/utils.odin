@@ -63,7 +63,7 @@ square_set :: proc(t: ^testing.T) {
 		{9, 7, 0, 0, 9},
 		{9, 9, 9, 9, 9},
 	},
-	{0, 1},
+	{1, 0},
 	)
 
 	testing.expect_value(t, set, game.Numbers_Set{1, 2, 3, 4, 7})

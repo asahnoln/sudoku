@@ -66,10 +66,10 @@ region_set :: proc(
 	set: Numbers_Set,
 ) {
 	row_final := min(row_i + max_rows, len(reg))
-	for x in row_i ..< row_final {
-		col_final := min(col_i + max_cols, len(reg[x]))
-		for y in col_i ..< col_final {
-			set = set + {reg[x][y]}
+	for y in row_i ..< row_final {
+		col_final := min(col_i + max_cols, len(reg[y]))
+		for x in col_i ..< col_final {
+			set = set + {reg[y][x]}
 		}
 	}
 
@@ -77,7 +77,7 @@ region_set :: proc(
 }
 
 square_set :: proc(field: Field, p: Pos) -> Numbers_Set {
-	return region_set(field, p.x, p.y, max_rows = SQUARE_SIZE, max_cols = SQUARE_SIZE)
+	return region_set(field, p.y, p.x, max_rows = SQUARE_SIZE, max_cols = SQUARE_SIZE)
 }
 
 row_set :: proc(field: Field, i: int) -> Numbers_Set {
@@ -89,7 +89,7 @@ col_set :: proc(field: Field, i: int) -> Numbers_Set {
 }
 
 cell_possible_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
-	sq_p := find_square_pos({row_i, col_i})
+	sq_p := find_square_pos({col_i, row_i})
 	s := square_set(field, sq_p)
 	r := row_set(field, row_i)
 	c := col_set(field, col_i)
@@ -98,19 +98,8 @@ cell_possible_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
 }
 
 find_square_pos :: proc(p: Pos) -> (sq_p: Pos) {
-	if p.x >= SQUARE_SIZE {
-		sq_p.x = SQUARE_SIZE
-	}
-	if p.y >= SQUARE_SIZE {
-		sq_p.y = SQUARE_SIZE
-	}
-
-	if p.x >= SQUARE_SIZE * 2 {
-		sq_p.x = SQUARE_SIZE * 2
-	}
-	if p.y >= SQUARE_SIZE * 2 {
-		sq_p.y = SQUARE_SIZE * 2
-	}
+	sq_p.x = SQUARE_SIZE * (p.x / SQUARE_SIZE)
+	sq_p.y = SQUARE_SIZE * (p.y / SQUARE_SIZE)
 
 	return sq_p
 }
