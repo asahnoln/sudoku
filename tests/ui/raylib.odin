@@ -52,9 +52,8 @@ draw_raylib :: proc(t: ^testing.T) {
 		},
 		colors = {bg_active = rl.BLUE, bg_default = rl.GRAY, border = rl.WHITE, text = rl.BLACK},
 	}
-	dp: ui.Draw_Proc = ui.draw_raylib
 
-	dp(&lib, {x = 0, y = 0, v = 1})
+	ui.draw_raylib(lib, {x = 0, y = 0, v = 1})
 	testing.expect_value(
 		t,
 		gotDraw,
@@ -78,7 +77,7 @@ draw_raylib :: proc(t: ^testing.T) {
 		},
 	)
 
-	dp(&lib, {x = 1, y = 1, v = 2, s = true})
+	ui.draw_raylib(lib, {x = 1, y = 1, v = 2, s = true})
 	testing.expect_value(
 		t,
 		gotDraw,
@@ -102,6 +101,6 @@ draw_raylib :: proc(t: ^testing.T) {
 		},
 	)
 
-	dp(&lib, {x = 1, y = 1, v = 0, s = true})
+	ui.draw_raylib(lib, {x = 1, y = 1, v = 0, s = true})
 	testing.expect_value(t, gotText.times_called, 2)
 }

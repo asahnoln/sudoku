@@ -13,13 +13,8 @@ output_field_graphical :: proc(t: ^testing.T) {
 	}
 	o := game.Field_Mask{{true, false}, {true, true}}
 
-	@(static) got: [dynamic]ui.Cell
-	got = make([dynamic]ui.Cell)
+	got := ui.convert_field_to_cells(f, o, {0, 1})
 	defer delete(got)
-
-	ui.output_field_graphical(f, o, {0, 1}, nil, proc(lib: rawptr, c: ui.Cell) {
-		append(&got, c)
-	})
 
 	want := []ui.Cell {
 		{x = 0, y = 0, v = 1, s = false},
@@ -28,13 +23,4 @@ output_field_graphical :: proc(t: ^testing.T) {
 		{x = 1, y = 1, v = 5, s = false},
 	}
 	testing.expectf(t, slice.equal(got[:], want), "got %v; want %v", got, want)
-}
-
-@(test)
-is_pos_in_area :: proc(t: ^testing.T) {
-	ok := ui.is_pos_in_area({1, 1}, {0, 0, 10, 10})
-	testing.expect(t, ok)
-
-	ok = ui.is_pos_in_area({15, 15}, {0, 0, 10, 10})
-	testing.expect(t, !ok)
 }

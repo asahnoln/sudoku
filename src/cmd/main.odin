@@ -70,7 +70,10 @@ game_ui :: proc() {
 		rl.BeginDrawing()
 		defer rl.EndDrawing()
 
-		ui.output_field_graphical(g.field, g.field_mask, g.pos, &r, ui.draw_raylib)
+		cs := ui.convert_field_to_cells(g.field, g.field_mask, g.pos)
+		for c in cs {
+			ui.draw_raylib(r, c)
+		}
 
 		if rl.IsMouseButtonPressed(.LEFT) {
 			g.pos = input.pos_from_mouse(rl.GetMouseX(), rl.GetMouseY(), r.width)

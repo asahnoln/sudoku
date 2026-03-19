@@ -19,22 +19,20 @@ Raylib :: struct {
 	},
 }
 
-draw_raylib :: proc(lib: rawptr, cell: Cell) {
-	this := cast(^Raylib)lib
-
-	this.draw(
-		cast(c.int)cell.x * this.width,
-		cast(c.int)cell.y * this.width,
-		this.width,
-		this.width,
-		cell.s ? this.colors.bg_active : this.colors.bg_default,
+draw_raylib :: proc(lib: Raylib, cell: Cell) {
+	lib.draw(
+		cast(c.int)cell.x * lib.width,
+		cast(c.int)cell.y * lib.width,
+		lib.width,
+		lib.width,
+		cell.s ? lib.colors.bg_active : lib.colors.bg_default,
 	)
-	this.draw_border(
-		cast(c.int)cell.x * this.width,
-		cast(c.int)cell.y * this.width,
-		this.width,
-		this.width,
-		this.colors.border,
+	lib.draw_border(
+		cast(c.int)cell.x * lib.width,
+		cast(c.int)cell.y * lib.width,
+		lib.width,
+		lib.width,
+		lib.colors.border,
 	)
 
 	if cell.v == 0 {
@@ -46,12 +44,12 @@ draw_raylib :: proc(lib: rawptr, cell: Cell) {
 	ctext := strings.clone_to_cstring(text)
 	defer delete(ctext)
 
-	this.text(
+	lib.text(
 		ctext,
 		// TODO: Write center proc
-		cast(c.int)cell.x * this.width + (this.width / 2) - (this.text_size / 2),
-		cast(c.int)cell.y * this.width + (this.width / 2) - (this.text_size / 2),
-		this.text_size,
-		this.colors.text,
+		cast(c.int)cell.x * lib.width + (lib.width / 2) - (lib.text_size / 2),
+		cast(c.int)cell.y * lib.width + (lib.width / 2) - (lib.text_size / 2),
+		lib.text_size,
+		lib.colors.text,
 	)
 }
