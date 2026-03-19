@@ -2,14 +2,14 @@ package ui
 
 import "core:strings"
 import "src:game"
-import "src:input"
+import "src:types"
 
 SELECTED :: "\x1b[44;37m"
 RESET :: "\x1b[0m"
 
 output_field :: proc(
 	f: game.Field,
-	p: input.Pos,
+	p: types.Pos,
 	o: [][]bool,
 	allocator := context.allocator,
 ) -> string {

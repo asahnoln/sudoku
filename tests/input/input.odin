@@ -2,13 +2,14 @@ package input_test
 
 import "core:testing"
 import "src:input"
+import "src:types"
 
 @(test)
 position :: proc(t: ^testing.T) {
 	tests := []struct {
-		start: input.Pos,
+		start: types.Pos,
 		dir:   input.Direction,
-		want:  input.Pos,
+		want:  types.Pos,
 	} {
 		{{0, 0}, .Right, {1, 0}}, //
 		{{4, 0}, .Left, {3, 0}},

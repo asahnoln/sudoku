@@ -1,6 +1,7 @@
 package ui
 
 import "src:game"
+import "src:types"
 import rl "vendor:raylib"
 
 Cell :: struct {
@@ -14,7 +15,7 @@ Draw_Proc :: proc(lib: rawptr, c: Cell)
 output_field_graphical :: proc(
 	f: game.Field,
 	m: game.Field_Mask,
-	p: game.Pos,
+	p: types.Pos,
 	lib: rawptr,
 	draw: Draw_Proc,
 ) {

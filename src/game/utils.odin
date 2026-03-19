@@ -1,6 +1,7 @@
 package game
 
 import "core:math/rand"
+import "src:types"
 
 generate_field :: proc(
 	gen := context.random_generator,
@@ -76,7 +77,7 @@ region_set :: proc(
 	return set
 }
 
-square_set :: proc(field: Field, p: Pos) -> Numbers_Set {
+square_set :: proc(field: Field, p: types.Pos) -> Numbers_Set {
 	return region_set(field, p.y, p.x, max_rows = SQUARE_SIZE, max_cols = SQUARE_SIZE)
 }
 
@@ -97,7 +98,7 @@ cell_possible_set :: proc(field: Field, row_i: int, col_i: int) -> Numbers_Set {
 	return ALL_NUMBERS - s - r - c
 }
 
-find_square_pos :: proc(p: Pos) -> (sq_p: Pos) {
+find_square_pos :: proc(p: types.Pos) -> (sq_p: types.Pos) {
 	sq_p.x = SQUARE_SIZE * (p.x / SQUARE_SIZE)
 	sq_p.y = SQUARE_SIZE * (p.y / SQUARE_SIZE)
 

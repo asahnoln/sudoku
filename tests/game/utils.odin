@@ -4,6 +4,7 @@ import "core:math/rand"
 import "core:slice"
 import "core:testing"
 import "src:game"
+import "src:types"
 
 // TODO: Find efficient algo to generate field
 // NOTE: This is only to test if force filling works at all
@@ -126,8 +127,8 @@ cell_possible_set :: proc(t: ^testing.T) {
 @(test)
 find_closest_square_pos :: proc(t: ^testing.T) {
 	tests := []struct {
-		search: game.Pos,
-		want:   game.Pos,
+		search: types.Pos,
+		want:   types.Pos,
 	} {
 		{{1, 1}, {0, 0}}, //
 		{{3, 4}, {3, 3}},

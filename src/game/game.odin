@@ -2,6 +2,7 @@ package game
 
 import "core:slice"
 import "src:input"
+import "src:types"
 
 Game :: struct {
 	field:        Field,
@@ -9,7 +10,7 @@ Game :: struct {
 	state:        State,
 	max_mistakes: int,
 	mistakes:     int,
-	pos:          Pos,
+	pos:          types.Pos,
 	quit:         bool,
 }
 
@@ -18,8 +19,6 @@ State :: enum {
 	Won,
 	Lost,
 }
-
-Pos :: [2]int
 
 Row :: []int
 Field :: []Row
@@ -67,7 +66,7 @@ play :: proc(g: ^Game, cmd: input.Cmd) {
 	}
 }
 
-enter_number :: proc(g: ^Game, p: Pos, n: int) -> (ok: bool) {
+enter_number :: proc(g: ^Game, p: types.Pos, n: int) -> (ok: bool) {
 	if g.field[p.y][p.x] == n {
 		g.field_mask[p.y][p.x] = true
 		ok = true

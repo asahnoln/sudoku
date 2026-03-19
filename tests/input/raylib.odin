@@ -2,7 +2,7 @@ package input_test
 
 import "core:testing"
 import "src:input"
-import rl "vendor:raylib"
+import "src:types"
 
 // TODO: Parse raylib keyboard keys to bytes?
 
@@ -10,5 +10,5 @@ import rl "vendor:raylib"
 mouse :: proc(t: ^testing.T) {
 	p := input.pos_from_mouse(25, 1, 20)
 
-	testing.expect_value(t, p, input.Pos{1, 0})
+	testing.expect_value(t, p, types.Pos{1, 0})
 }

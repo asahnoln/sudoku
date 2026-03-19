@@ -5,6 +5,7 @@ import "core:slice"
 import "core:testing"
 import "src:game"
 import "src:input"
+import "src:types"
 
 @(test)
 play :: proc(t: ^testing.T) {
@@ -14,7 +15,7 @@ play :: proc(t: ^testing.T) {
 	} {
 		{input.Move{.Up}, proc(t: ^testing.T, g: game.Game) {
 				got := g.pos
-				want := game.Pos{2, 0}
+				want := types.Pos{2, 0}
 				testing.expectf(t, got == want, "for move left got pos %v; want %v", got, want)
 			}}, //
 		{.Quit, proc(t: ^testing.T, g: game.Game) {
