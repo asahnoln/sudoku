@@ -54,11 +54,12 @@ game_ui :: proc() {
 	keys := keys_map()
 
 	r := ui.Raylib {
-		width       = 60,
-		text_size   = 30,
-		draw        = rl.DrawRectangle,
+		width = 60,
+		text_size = 30,
+		draw = rl.DrawRectangle,
 		draw_border = rl.DrawRectangleLines,
-		text        = rl.DrawText,
+		text = rl.DrawText,
+		colors = {bg_active = rl.BLUE, bg_default = rl.GRAY, border = rl.WHITE, text = rl.BLACK},
 	}
 	rl.InitWindow(9 * r.width, 9 * r.width, "SUDOKU")
 	defer rl.CloseWindow()
