@@ -6,6 +6,8 @@
 2. [x] Terminal
 3. [ ] Window
 
+- [ ] Center text now a little off to the right
+- [ ] Figure out font loading
 - [ ] Draw big borders for big squares
 - [ ] Write button system?
 - [ ] Refactor input parse
