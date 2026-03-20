@@ -6,18 +6,6 @@
 2. [x] Terminal
 3. [ ] Window
 
-- [x] Generate game field according to rules
-- [x] Output the field
-- [x] Player can choose a cell
-- [x] Output chosen cell
-- [x] Hide some of the numbers
-- [x] Player can place a number in a cell
-- [x] Game should compare place number against the real one
-- [x] Generate open field
-- [x] Signal wrong input
-- [x] Signal winning
-- [ ] Continue looking at code to refactor from enter_input proc
-- [ ] Rewrite x and y (right now used x vertically and y horizontally)
 - [ ] Draw big borders for big squares
 - [ ] Write button system?
 - [ ] Refactor input parse
@@ -32,9 +20,12 @@
 - [ ] Find efficient algo to generate field
 - [ ] Process and return allocation errors
 
-## TODO UI
+## TODO
 
-- [ ]
+- [ ] Menu (New game, key config, quit)
+- [ ] Key config (save and load)
+- [ ] Game screen with mistakes and other info and buttons (reset, back to menu)
+- [ ] Export to win, mac, lin, android
 
 ## Input
 

@@ -55,7 +55,7 @@ game_ui :: proc() {
 
 	r := ui.Raylib {
 		width = 60,
-		text_size = 30,
+		font_size = 30,
 		draw = rl.DrawRectangle,
 		draw_border = rl.DrawRectangleLines,
 		text = rl.DrawText,

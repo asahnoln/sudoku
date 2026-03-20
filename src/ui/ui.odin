@@ -2,7 +2,6 @@ package ui
 
 import "src:game"
 import "src:types"
-import rl "vendor:raylib"
 
 Cell :: struct {
 	x, y: int,

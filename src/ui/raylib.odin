@@ -3,11 +3,12 @@ package ui
 import "core:c"
 import "core:strconv"
 import "core:strings"
+import "src:types"
 import rl "vendor:raylib"
 
 Raylib :: struct {
 	width:       c.int,
-	text_size:   c.int,
+	font_size:   c.int,
 	draw:        proc "c" (posX, posY: c.int, width, height: c.int, color: rl.Color),
 	draw_border: proc "c" (posX, posY: c.int, width, height: c.int, color: rl.Color),
 	text:        proc "c" (text: cstring, posX, posY: c.int, fontSize: c.int, color: rl.Color),
@@ -44,12 +45,30 @@ draw_raylib :: proc(lib: Raylib, cell: Cell) {
 	ctext := strings.clone_to_cstring(text)
 	defer delete(ctext)
 
+	// text_size := rl.MeasureTextEx(rl.GetFontDefault(), ctext, cast(f32)lib.font_size, 0)
+	text_size := rl.MeasureText(ctext, lib.font_size)
+	text_pos := center_text_coords(
+		{
+			cast(int)(cast(c.int)cell.x * lib.width),
+			cast(int)(cast(c.int)cell.y * lib.width),
+			cast(int)(lib.width),
+			cast(int)(lib.width),
+		},
+		{cast(int)(text_size), cast(int)(text_size)},
+	)
 	lib.text(
 		ctext,
-		// TODO: Write center proc
-		cast(c.int)cell.x * lib.width + (lib.width / 2) - (lib.text_size / 2),
-		cast(c.int)cell.y * lib.width + (lib.width / 2) - (lib.text_size / 2),
-		lib.text_size,
+		cast(c.int)text_pos.x,
+		cast(c.int)cell.y * lib.width + (lib.width / 2) - (lib.font_size / 2),
+		lib.font_size,
 		lib.colors.text,
 	)
+}
+
+center_text_coords :: proc(c: struct {
+		x, y, w, h: int,
+	}, t: struct {
+		w, h: int,
+	}) -> types.Pos {
+	return {c.x + c.w / 2 - t.w / 2, c.y + c.h / 2 - t.h / 2}
 }

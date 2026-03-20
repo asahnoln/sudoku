@@ -6,7 +6,7 @@ import "src:game"
 import "src:ui"
 
 @(test)
-output_field_graphical :: proc(t: ^testing.T) {
+convert_feild_to_cells :: proc(t: ^testing.T) {
 	f := game.Field {
 		{1, 2}, //
 		{4, 5},

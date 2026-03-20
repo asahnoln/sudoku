@@ -2,6 +2,7 @@ package ui_test
 
 import "core:c"
 import "core:testing"
+import "src:types"
 import "src:ui"
 import rl "vendor:raylib"
 
@@ -26,7 +27,7 @@ draw_raylib :: proc(t: ^testing.T) {
 
 	lib := ui.Raylib {
 		width = 20,
-		text_size = 10,
+		font_size = 10,
 		draw = proc "c" (posX, posY: c.int, width, height: c.int, color: rl.Color) {
 			gotDraw.posX = posX
 			gotDraw.posY = posY
@@ -103,4 +104,11 @@ draw_raylib :: proc(t: ^testing.T) {
 
 	ui.draw_raylib(lib, {x = 1, y = 1, v = 0, s = true})
 	testing.expect_value(t, gotText.times_called, 2)
+}
+
+@(test)
+center_text_coords :: proc(t: ^testing.T) {
+	got := ui.center_text_coords({10, 20, 30, 40}, {4, 6})
+
+	testing.expect_value(t, got, types.Pos{23, 37})
 }
